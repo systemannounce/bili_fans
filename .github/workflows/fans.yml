@@ -57,5 +57,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
       - name: '提交tag🚩'
+        if: ${{github.event_name != 'pull_request'}}
         run: |
           git push origin ${{ steps.current_date.outputs.date }}
