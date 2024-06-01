@@ -1,0 +1,61 @@
+name: 'fan'
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**.py'
+      - '**fans.yml'
+  # 进行手动控制
+  workflow_dispatch:
+  schedule:
+  # 每天运行一次(关注时长少于一天，就随他去吧，当他点错了)
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: write
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: '下载源码🏗️'
+        uses: actions/checkout@v4
+      - name: '设置Python环境🔄️'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: '安装依赖☑️'
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r ./requirements.txt
+      - name: '运行程序💻'
+        env:
+          bili_sessdata: ${{ secrets.bili_sessdata }}
+          bili_uid: ${{ secrets.bili_uid }}
+        run: python3 ./fans.py
+      - name: '获取当前日期🕘'
+        id: current_date
+        run: |
+          echo "date=$(date +"%Y-%m-%d_%H-%M-%S")" >> $GITHUB_OUTPUT
+      - name: '提交data💾'
+        if: ${{github.event_name != 'pull_request'}}
+        run: |
+          git config --global user.email "55303494+systemannounce@users.noreply.github.com"
+          git config --global user.name "Felix_SANA"
+          git add --all
+          git commit -m "${{ steps.current_date.outputs.date }} Update fans list"
+          git tag ${{ steps.current_date.outputs.date }}
+      - name: '提交代码🛫'
+        if: ${{github.event_name != 'pull_request'}}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+      - name: '提交tag🚩'
+        run: |
+          git push origin ${{ steps.current_date.outputs.date }}
