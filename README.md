@@ -52,9 +52,13 @@
 
 >在Fork之后Actions处于未启用状态，请自行启动，否则将无法自动运行。
 >
->具体操作步骤就是点击上面的Actions选项卡，然后点击中间的**I understand my workflows, go ahead and enable them**就可以了
+>具体操作步骤就是点击上面的Actions选项卡，然后点击中间的**I understand my workflows, go ahead and enable them**
+>
+>最后再在左边工作流界面启用fan名称的工作流即可
 
-![image](https://github.com/systemannounce/bili_fans/assets/55303494/a27c2be6-3422-423f-959d-0c1a2d75b7ee)
+![image](https://github.com/systemannounce/bili_fans/assets/55303494/a27c2be6-3422-423f-959d-0c1a2d75b7ee)  
+![image](https://github.com/systemannounce/bili_fans/assets/55303494/3b94f66a-efdd-4726-896a-54887797f077)
+
 
 
 ### 6. 手动运行（自动运行为每一天的大概9点左右-北京时间）
