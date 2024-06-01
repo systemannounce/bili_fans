@@ -45,8 +45,8 @@ jobs:
       - name: '提交data💾'
         if: ${{github.event_name != 'pull_request'}}
         run: |
-          git config --global user.email "55303494+systemannounce@users.noreply.github.com"
-          git config --global user.name "Felix_SANA"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
           git add --all
           git commit -m "${{ steps.current_date.outputs.date }} Update fans list"
           git tag ${{ steps.current_date.outputs.date }}
