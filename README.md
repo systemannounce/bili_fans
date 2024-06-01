@@ -48,13 +48,25 @@
 
 ![image](https://github.com/systemannounce/bili_fans/assets/55303494/0ee6363e-aa6b-4e8b-a099-7e0cebd4904c)
 
-### 5. 手动运行（自动运行为每一天的大概9点左右-北京时间）
+### 5. 启用Actions
+
+>在Fork之后Actions处于未启用状态，请自行启动，否则将无法自动运行。
+>
+>具体操作步骤就是点击上面的Actions选项卡，然后点击中间的**I understand my workflows, go ahead and enable them**就可以了
+
+![image](https://github.com/systemannounce/bili_fans/assets/55303494/a27c2be6-3422-423f-959d-0c1a2d75b7ee)
+
+
+### 6. 手动运行（自动运行为每一天的大概9点左右-北京时间）
 > 本仓库带自动运行，每天运行一次，基本没有手动操作的必要，如果你实在想运行可以参照下面的步骤
 ![image](https://github.com/systemannounce/bili_fans/assets/55303494/771baaa5-e986-4721-bb4d-31e3d4ada811)
 
-### 6. 查看粉丝变更
+### 7. 查看粉丝变更
 > 仓库每次自动提交都创建了一个tag，可以移步标签页进行比较和查看更改。
 
-### 7. 禁用仓库提醒
+### 8. 禁用仓库提醒
 > 每天运行一次，如果没有粉丝数改变的话GitHub进行提交代码的时候会报错然后给你发个大大的ERROR电子邮件，如果不想被打扰到可以在你的仓库 `Unwatch` 这个位置禁用所有提醒。  
 ![image](https://github.com/systemannounce/bili_fans/assets/55303494/fad7bd8c-fe9c-4321-8876-e23c38b1328f)
+
+### 9. 及时更新仓库
+> 因为GitHub的规则，会对三个月没有动态的仓库自动禁止Actions的运行，请及时更新仓库，任何更改都可以。
