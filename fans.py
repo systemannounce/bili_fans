@@ -62,7 +62,7 @@ class Fans:
         users = self.json['data']['list']
         if self.page == 1:
             os.remove('./fans.csv')
-        with open('./fans.csv', 'a', newline='') as f:
+        with open('./temp.csv', 'a', newline='') as f:
             writer = csv.writer(f)
             for user in users:
                 uid = user['mid']
@@ -73,7 +73,7 @@ class Fans:
                 writer.writerow([uid, username, m_time, user_sign])
 
     def re_sort(self):
-        with open('./fans.csv', 'r', encoding='utf-8') as file1:
+        with open('./temp.csv', 'r', encoding='utf-8') as file1:
             csv_reader = csv.reader(file1)
             data1 = [[int(x) if i == 0 else x for i, x in enumerate(row)] for row in csv_reader]
         sorted_data1 = sorted(data1, key=lambda x: x[0])
@@ -88,6 +88,7 @@ class Fans:
 
             # 写入排序后的数据
             csv_writer.writerows(sorted_data1)
+        os.remove('./temp.csv')
 
 
 if __name__ == '__main__':
