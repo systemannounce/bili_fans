@@ -1,8 +1,7 @@
 # b站粉丝增减查看仓库（仅限千粉以下）
 
 > 如今我们终于得知那天取关我们粉丝的名字…………  
->    
-> 参考仓库：https://github.com/SocialSisterYi/bilibili-API-collect
+
 
 ## 使用方法：
 
@@ -74,3 +73,6 @@
 
 ### 9. 及时更新仓库
 > 因为GitHub的规则，会对三个月没有动态的仓库自动禁止Actions的运行，请及时更新仓库，任何更改都可以。
+
+
+> 感谢：https://github.com/SocialSisterYi/bilibili-API-collect
