@@ -25,6 +25,9 @@ jobs:
   CheckRepo:
     if: ${{ !(github.repository == 'felixsana/bili_fans' && github.event_name == 'workflow_dispatch') }}
     runs-on: ubuntu-latest
+    steps:
+      - name: Pre step
+        run: echo "Allow Run"
     
   Update:
     needs: CheckRepo
