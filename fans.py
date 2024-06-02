@@ -5,6 +5,7 @@ import csv
 import datetime
 import re
 import os
+import sys
 
 
 class Fans:
@@ -26,7 +27,7 @@ class Fans:
             'vmid': self.uid,
             'pn': 1
         }
-        pass
+        self.exception = 1
 
     def get_fans(self):
         try:
@@ -36,6 +37,7 @@ class Fans:
             json_list = self.sess.get(self.fans_url, headers=self.headers, params=self.parameter)
             self.json = json.loads(json_list.text)
             if self.json['code'] != 0:
+                self.exception = self.json['code']
                 raise Exception(self.json['message'])
             self.total_fans = self.json['data']['total']
             self.out_fans()
@@ -49,6 +51,7 @@ class Fans:
                 }
                 json_list = self.sess.get(self.fans_url, headers=self.headers, params=self.parameter)
                 if self.json['code'] != 0:
+                    self.exception = self.json['code']
                     raise Exception(self.json['message'])
                 self.json = json.loads(json_list.text)
                 self.out_fans()
@@ -57,12 +60,13 @@ class Fans:
         except Exception as e:
             print(e)
             print('程序中止，请检查问题。')
+            sys.exit(self.exception)
 
     def out_fans(self):
         users = self.json['data']['list']
         if self.page == 1:
             os.remove('./fans.csv')
-        with open('./fans.csv', 'a', newline='') as f:
+        with open('./temp.csv', 'a', newline='') as f:
             writer = csv.writer(f)
             for user in users:
                 uid = user['mid']
@@ -73,7 +77,7 @@ class Fans:
                 writer.writerow([uid, username, m_time, user_sign])
 
     def re_sort(self):
-        with open('./fans.csv', 'r', encoding='utf-8') as file1:
+        with open('./temp.csv', 'r', encoding='utf-8') as file1:
             csv_reader = csv.reader(file1)
             data1 = [[int(x) if i == 0 else x for i, x in enumerate(row)] for row in csv_reader]
         sorted_data1 = sorted(data1, key=lambda x: x[0])
@@ -88,6 +92,7 @@ class Fans:
 
             # 写入排序后的数据
             csv_writer.writerows(sorted_data1)
+        os.remove('./temp.csv')
 
 
 if __name__ == '__main__':
