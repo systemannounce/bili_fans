@@ -22,7 +22,12 @@ env:
   TZ: Asia/Shanghai
 
 jobs:
+  CheckRepo:
+    if: ${{ !(github.repository == 'felixsana/bili_fans' && github.event_name == 'workflow_dispatch') }}
+    runs-on: ubuntu-latest
+    
   Update:
+    needs: CheckRepo
     runs-on: ubuntu-latest
     steps:
       - name: '下载源码🏗️'
