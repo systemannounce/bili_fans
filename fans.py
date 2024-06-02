@@ -66,6 +66,7 @@ class Fans:
         users = self.json['data']['list']
         if self.page == 1:
             os.remove('./fans.csv')
+            # 存入临时CSV文件，以防中途程序或者接口出错进行误更新
         with open('./temp.csv', 'a', newline='') as f:
             writer = csv.writer(f)
             for user in users:
