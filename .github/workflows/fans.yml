@@ -67,4 +67,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: fan_list
-          path: ./fan.csv
+          path: ./fans.csv
