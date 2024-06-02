@@ -23,12 +23,12 @@ env:
 
 jobs:
   CheckRepo:
-    if: ${{ !(github.repository == 'felixsana/bili_fans' && github.event_name == 'workflow_dispatch') }}
+    if: ${{ !(github.repository == 'systemannounce/bili_fans' && github.event_name == 'schedule') }}
     runs-on: ubuntu-latest
     steps:
       - name: Pre step
-        run: echo "Allow Run"
-    
+        run: echo "Pass"
+
   Update:
     needs: CheckRepo
     runs-on: ubuntu-latest
@@ -76,3 +76,4 @@ jobs:
         with:
           name: fan_list
           path: ./fans.csv
+          
