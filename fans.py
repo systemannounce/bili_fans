@@ -5,6 +5,7 @@ import csv
 import datetime
 import re
 import os
+import sys
 
 
 class Fans:
@@ -26,7 +27,7 @@ class Fans:
             'vmid': self.uid,
             'pn': 1
         }
-        pass
+        self.exception = 1
 
     def get_fans(self):
         try:
@@ -36,6 +37,7 @@ class Fans:
             json_list = self.sess.get(self.fans_url, headers=self.headers, params=self.parameter)
             self.json = json.loads(json_list.text)
             if self.json['code'] != 0:
+                self.exception = self.json['code']
                 raise Exception(self.json['message'])
             self.total_fans = self.json['data']['total']
             self.out_fans()
@@ -49,6 +51,7 @@ class Fans:
                 }
                 json_list = self.sess.get(self.fans_url, headers=self.headers, params=self.parameter)
                 if self.json['code'] != 0:
+                    self.exception = self.json['code']
                     raise Exception(self.json['message'])
                 self.json = json.loads(json_list.text)
                 self.out_fans()
@@ -57,6 +60,7 @@ class Fans:
         except Exception as e:
             print(e)
             print('程序中止，请检查问题。')
+            sys.exit(self.exception)
 
     def out_fans(self):
         users = self.json['data']['list']
