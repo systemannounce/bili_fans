@@ -64,8 +64,6 @@ class Fans:
 
     def out_fans(self):
         users = self.json['data']['list']
-        if self.page == 1:
-            os.remove('./fans.csv')
         with open('./temp.csv', 'a', newline='') as f:
             writer = csv.writer(f)
             for user in users:
@@ -82,7 +80,7 @@ class Fans:
             data1 = [[int(x) if i == 0 else x for i, x in enumerate(row)] for row in csv_reader]
         sorted_data1 = sorted(data1, key=lambda x: x[0])
         header1 = ['UID', '用户名（共有{}位）'.format(self.total_fans), '关注日期', '签名']
-        # 打开新的 CSV 文件进行写入
+        # 打开fans的 CSV 文件进行覆盖写入
         with open('./fans.csv', 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
 
