@@ -7,7 +7,7 @@
 ---
 
 ## 注意：  
-### 目前已知b站重名bug存在，请尽快更新到v1.4版本，如果是fork的用户请再你的仓库点击Update Branch
+### 目前已知b站重名bug存在，请尽快更新到v1.4版本，如果是fork的用户请在你fork的仓库内点击Update Branch
 
 ---
 
