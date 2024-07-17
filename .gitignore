@@ -1,4 +1,5 @@
 Release
 .idea
+__pycache__
 *.txt
 temp.csv
