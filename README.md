@@ -7,6 +7,14 @@
 ---
 
 ## 注意：  
+### 目前已知b站重名bug存在，请尽快更新到v1.4版本，如果是fork的用户请再你的仓库点击Update Branch
+
+---
+
+![image](https://github.com/user-attachments/assets/e4096da8-e69a-4d24-9554-3060a1fd3ebb)
+
+---
+## 提醒：
 经过几天的测试，bilibili的SESSDATA就算不退出网页端一般三天左右刷新一次。  
 如果遇到Actions报错退出代码 `160` ，提示信息 **-352** 或者是**账号未登录**的话，那就是SESSDATA失效了。
 
