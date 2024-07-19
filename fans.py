@@ -7,11 +7,15 @@ import re
 import os
 import sys
 import count
+import random
 
 # 这里调整是否忽略重名检查。1为开启重名检查，0为关闭重名检查。
 # 今天遇到了b站服务器抽风了，获取了一堆两个三个同名粉丝，所以临时加了这个模块检查，强烈建议启用！！！！
 check = 1
 
+
+class EmptyRespond(Exception):
+    pass
 
 
 class Fans:
@@ -37,45 +41,56 @@ class Fans:
 
     def get_fans(self):
         try:
-            self.sess.get(self.init_url, headers=self.headers)
-            self.sess.cookies.set('SESSDATA', self.sessdata)
-            time.sleep(1)
-            json_list = self.sess.get(self.fans_url, headers=self.headers, params=self.parameter)
-            print("current page: 1")
-            self.json = json.loads(json_list.text)
-            if self.json['code'] != 0:
-                self.exception = self.json['code']
-                raise Exception(self.json['message'])
-            self.total_fans = self.json['data']['total']
-            self.out_fans()
-            self.pages = int(self.total_fans / 50)
-            if self.total_fans % 50 != 0:
-                self.pages += 1
-            if self.pages > 20:    # 一千粉以后全是空白页，不浪费b站服务器资源了。
-                self.pages = 20
-            for self.page in range(2, self.pages + 1):
-                self.parameter = {
-                    'vmid': self.uid,
-                    'pn': self.page
-                }
+            try:
+                self.sess.get(self.init_url, headers=self.headers)
+                self.sess.cookies.set('SESSDATA', self.sessdata)
+                time.sleep(1)
                 json_list = self.sess.get(self.fans_url, headers=self.headers, params=self.parameter)
-                print("current page:", self.page)
+                print("current page: 1")
+                self.json = json.loads(json_list.text)
                 if self.json['code'] != 0:
                     self.exception = self.json['code']
                     raise Exception(self.json['message'])
-                self.json = json.loads(json_list.text)
+                self.total_fans = self.json['data']['total']
                 self.out_fans()
-                time.sleep(1)
-            self.re_sort()
+                self.pages = int(self.total_fans / 50)
+                if self.total_fans % 50 != 0:
+                    self.pages += 1
+                # if self.pages > 20:    # 一千粉以后全是空白页，不浪费b站服务器资源了。
+                #     self.pages = 20
+                # 2024/07/19 今天测试发现b站居然可以爬取1000以后的粉丝列表，不知道是抽风了还是怎么了。
+                # 目前经过测试2000粉up还是可以正常获取，不清楚上限是多少。
+
+                for self.page in range(2, self.pages + 1):
+                    self.parameter = {
+                        'vmid': self.uid,
+                        'pn': self.page
+                    }
+                    json_list = self.sess.get(self.fans_url, headers=self.headers, params=self.parameter)
+                    print("current page:", self.page)
+                    if self.json['code'] != 0:
+                        self.exception = self.json['code']
+                        raise Exception(self.json['message'])
+                    self.json = json.loads(json_list.text)
+                    self.out_fans()
+                    time.sleep(random.randint(1, 3))
+                self.re_sort()
+            except EmptyRespond as r:
+                print(r)
+                self.re_sort()
         except Exception as e:
-            os.remove('./temp.txt')
-            os.remove('./temp.csv')
+            if os.path.exists('./temp.txt'):
+                os.remove('./temp.txt')
+            if os.path.exists('./temp.csv'):
+                os.remove('./temp.csv')
             print(e)
             print('程序中止，请检查问题。')
             sys.exit(self.exception)
 
     def out_fans(self):
         users = self.json['data']['list']
+        if not users:
+            raise EmptyRespond("返回列表为空，中断获取并上传现有列表。")
         # 存入中间文件，以防出错然后文件错误修改覆盖。
         with open('./temp.csv', 'a', newline='') as f, open('./temp.txt', 'a', newline='', encoding='utf-8') as c:
             writer = csv.writer(f)
@@ -108,8 +123,10 @@ class Fans:
 
             # 写入排序后的数据
             csv_writer.writerows(sorted_data1)
-        os.remove('./temp.txt')
-        os.remove('./temp.csv')
+        if os.path.exists('./temp.txt'):
+            os.remove('./temp.txt')
+        if os.path.exists('./temp.csv'):
+            os.remove('./temp.csv')
 
     def ex_check(self, fp):
         csv_reader = csv.reader(fp)
@@ -120,7 +137,6 @@ class Fans:
         if ex_fans != row_count:
             self.exception = 666
             raise Exception("从b站服务器获取到多个同名粉丝，判定为无效获取。\n可能为b站服务器出错，请稍后重试或者提交issue。")
-
 
 
 if __name__ == '__main__':
